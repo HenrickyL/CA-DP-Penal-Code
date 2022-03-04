@@ -1,5 +1,4 @@
-# joaovictor3g CRA Template
-
+# Cidade Alta - Police Department
 This template has goal to optimize the initial development moments with React.js using CRA.
 
 ## Usage
