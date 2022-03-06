@@ -1,5 +1,6 @@
 // add all your routes here
 import { Home } from "../pages/Home";
+import { NotFound } from "../pages/NotFound";
 
 export const routes: RouteType[] = [
   {
@@ -13,8 +14,8 @@ export const routes: RouteType[] = [
     key: "home",
   },
   {
-    path: "/2",
-    element: <h1>2</h1>,
+    path: "/*",
+    element: <NotFound/>,
     key: "home",
   }
 ];

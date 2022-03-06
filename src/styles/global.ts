@@ -8,6 +8,7 @@ export const colors = {
 
   primary:'#736259',
   primaryLight:'#3D6BA5',
+  secundary: '#62766B',
 
 
   base:'#736259',
@@ -93,7 +94,7 @@ export const GlobalStyle = createGlobalStyle`
          -moz-user-select: none; /* Old versions of Firefox */
           -ms-user-select: none; /* Internet Explorer/Edge */
               user-select: none; /* Non-prefixed version, currently
-                                supported by Chrome, Edge, Opera and Firefox */
+                                 supported by Chrome, Edge, Opera and Firefox */
 }
 
 `;
