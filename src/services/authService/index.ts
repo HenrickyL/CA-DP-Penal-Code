@@ -19,9 +19,9 @@ export const setToken = (token:string)=>{
 }
 
 export const generateToken = (user:IUser):string=>{
-    if(process.env.JWT_KEY==null)
+    if(process.env.REACT_APP_JWT_KEY==null)
         throw new Error('jwt key not found')
-    const token = jwt.sign({user}, process.env.JWT_KEY,{ expiresIn: '2h'});
+    const token = jwt.sign({user}, process.env.REACT_APP_JWT_KEY,{ expiresIn: '2h'});
     return token;
 } 
 
@@ -46,7 +46,7 @@ export const SetLogin = async (userData:IUserRequest):Promise<IUserResponse|null
             throw new Error('Usuário ou senha inválido!');
         }
         const token = generateToken(existsUser)
-
+        console.log(allUser,userData,token)
         setToken(token)
 
         return existsUser;

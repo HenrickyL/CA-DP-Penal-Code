@@ -22,7 +22,7 @@ export const Menu = ()=>{
                 <Shield id="logo"/>
                 <h1>Departamento de Polícia</h1>
             </NavLink>
-
+            
            <Option to="login" title="Login"/>
 
         </StyMenu>

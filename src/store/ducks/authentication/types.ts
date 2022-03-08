@@ -34,7 +34,7 @@ export interface IUserResponse{
  */
 
 export interface AuthState{
-    readonly isLogged: boolean,
-    readonly token?: string,
+    readonly authenticated: boolean,
+    readonly token?: string | null,
     readonly user: IUser | null,
 }

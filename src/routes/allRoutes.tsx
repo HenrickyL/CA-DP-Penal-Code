@@ -1,5 +1,5 @@
 // add all your routes here
-import { LoginPage } from "../pages/Login";
+import LoginPage from "../pages/Login";
 import { NotFound } from "../pages/NotFound";
 
 export const routes: RouteType[] = [

@@ -2,9 +2,9 @@ import { Reducer } from 'redux';
 import { UIState,UITypes} from './types';
 
 const INITIAL_STATE:UIState = {
-    data: [],
     error:false,
-    loading:false
+    loading:false,
+    redirect:false
 }
 
 const reducer: Reducer<UIState> = 
@@ -13,7 +13,11 @@ const reducer: Reducer<UIState> =
             case UITypes.LOADING:
                 return {...state,loading:action.payload};
             case UITypes.ERROR:
-                return {...state,loading:false, error:false, data: action.payload};
+                return {...state,loading:false, error: action.payload};
+            case UITypes.REDIRECT:
+                return {...state,loading:false,error:false, redirect: action.payload};
+            case UITypes.CLEAN:
+                    return INITIAL_STATE;
             default:
                 return state;
         }
