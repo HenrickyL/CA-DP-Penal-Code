@@ -1,21 +1,21 @@
 // add all your routes here
-import { Home } from "../pages/Home";
+import { LoginPage } from "../pages/Login";
 import { NotFound } from "../pages/NotFound";
 
 export const routes: RouteType[] = [
   {
     path: "/",
-    element: <Home />,
+    element: <h1>Home</h1>,
     key: "home",
   },
   {
-    path: "/1",
-    element: <h1>1</h1>,
-    key: "home",
+    path: "login",
+    element: <LoginPage/>,
+    key: "login",
   },
   {
-    path: "/*",
+    path: "*",
     element: <NotFound/>,
-    key: "home",
+    key: "notfound",
   }
 ];

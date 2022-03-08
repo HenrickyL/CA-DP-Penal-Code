@@ -6,12 +6,12 @@ export const colors = {
 
   background: '#EBE9E3',
 
-  primary:'#736259',
-  primaryLight:'#3D6BA5',
+  primary:'#385889',
+  primaryLight:'#4072A7',
   secundary: '#62766B',
 
 
-  base:'#736259',
+  base: '#736259',
   white1: '#EAE7DF',
   white2: '#CCD5D7',
   white3: '#E1E0D7',

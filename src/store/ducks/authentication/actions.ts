@@ -1,7 +1,7 @@
 import {action} from 'typesafe-actions'
-import {User,AuthTypes} from './types'
+import {IUser,AuthTypes} from './types'
 
 
-export const login = (data:User)=> action(AuthTypes.LOGIN,data);
-
+export const loginSuccess = (data:IUser[])=> action(AuthTypes.LOGIN_SUCCESS,data);
+export const loginFailure = ()=> action(AuthTypes.LOGIN_FAILURE);
 export const logout = ()=> action(AuthTypes.LOGOUT);

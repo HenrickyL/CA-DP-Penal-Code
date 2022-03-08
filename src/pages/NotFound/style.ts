@@ -1,4 +1,3 @@
-import { colors } from './../../styles/global';
 import styled, { keyframes } from 'styled-components';
 
 
@@ -97,26 +96,22 @@ export const StyStrip = styled.div<IStripProp>`
 const test = keyframes`
     0%{
         background-position: center left;
-
     }
     
     50%{
         background-position: center right;
-
     }
 
     100%{
         background-position: center left;
-        
-
     }
 `
 export const StyNotFound = styled.div`
     display:flex ;
     position:relative ;
     justify-content:center ;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     overflow:hidden ;
     background-color:black ;
     transition:0.3s ;
