@@ -2,17 +2,16 @@
 /**
  * Actions Types
  */
-export enum RepositoriesTypes {
-    LOAD_REQUEST = '@repositories/LOAD_REQUEST',
-    LOAD_SUCCESS = '@repositories/LOAD_SUCCESS',
-    LOAD_FAILURE = '@repositories/LOAD_FAILURE'
+export enum UITypes {
+    LOADING = '@repositories/LOADING',
+    ERROR = '@repositories/ERROR',
 }
 
 
 /**
  * Data Types
  */
-export interface Repository{
+export interface UI{
 
 }
 
@@ -20,8 +19,8 @@ export interface Repository{
  * State Types
  */
 
-export interface RepositoriesState{
-    readonly data: Repository[],
+export interface UIState{
+    readonly data: UI,
     readonly loading: boolean,
     readonly error: boolean
 }

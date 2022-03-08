@@ -1,6 +1,9 @@
 import { combineReducers } from "redux";
-import repositories from "./ui";
+import ui from "./ui";
+import auth from "./authentication";
+
 
 export default combineReducers({
-    repositories,
+    ui,
+    auth
 });

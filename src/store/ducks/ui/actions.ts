@@ -1,8 +1,6 @@
 import {action} from 'typesafe-actions'
-import {Repository,RepositoriesTypes} from './types'
+import {UITypes} from './types'
 
-export const laodRequest = ()=> action(RepositoriesTypes.LOAD_REQUEST);
+export const setLoading = (value:boolean)=> action(UITypes.LOADING,value)
 
-export const laodSuccess = (data:Repository[])=> action(RepositoriesTypes.LOAD_SUCCESS,data);
-
-export const laodFailure = ()=> action(RepositoriesTypes.LOAD_FAILURE);
+export const setError = (value:boolean)=> action(UITypes.ERROR,value);
