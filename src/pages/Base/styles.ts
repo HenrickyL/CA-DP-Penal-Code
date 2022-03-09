@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-export const Header = styled.header`
+export const StyHeader = styled.header`
   width:100% ;
 `
 
 
-export const Container = styled.div`
+export const StyContainer = styled.div`
   display: flex;
   flex-direction:column ;
   justify-content: center;
@@ -14,13 +14,16 @@ export const Container = styled.div`
   position: relative;
 `;
 
-export const Main = styled.main`
+export const StyMain = styled.main`
   width:100% ;
   height:100% ;
   overflow-y:auto;
 `;
 
-export const Footer = styled.footer`
+export const StyFooter = styled.footer`
   display: flex;
-  background-color:yellow ;
+  align-items:center;
+  justify-content:center ;
+  width:100%;
+
 `;

@@ -1,4 +1,4 @@
-import { Container, Footer, Main,Header } from "./styles";
+import { StyContainer, StyFooter, StyMain,StyHeader } from "./styles";
 import {Outlet} from 'react-router-dom'
 import {Menu} from '../../components/Menu'
 import { useDispatch, useSelector } from "react-redux";
@@ -34,18 +34,19 @@ export function Base() {
     },[authState])
 
   return (
-    <Container>
-      <Header>
+    <StyContainer>
+      <StyHeader>
           <Menu/>
-      </Header>
-      <Main>
+      </StyHeader>
+      <StyMain>
         <Outlet />
-      </Main>
-      <Footer>
-        <span>
-         footer
-        </span>
-      </Footer>
-    </Container>
+      </StyMain>
+      <StyFooter>
+        <div>
+
+          <span>footer</span>
+        </div>
+      </StyFooter>
+    </StyContainer>
   );
 }
