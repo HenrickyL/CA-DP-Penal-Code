@@ -15,9 +15,12 @@ export const StyContainer = styled.div`
 `;
 
 export const StyMain = styled.main`
+  display:flex ;
+  flex-direction:column ;
+  align-items:center ;
+  justify-content:center ;
   width:100% ;
   height:100% ;
-  overflow-y:auto;
 `;
 
 export const StyFooter = styled.footer`

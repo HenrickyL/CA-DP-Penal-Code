@@ -1,6 +1,8 @@
 import { colors } from './../../styles/global';
-import styled from 'styled-components'
+import styled,{keyframes} from 'styled-components'
 import { NavLink } from 'react-router-dom';
+
+
 
 
 export const StyUserOptions = styled.div`
@@ -32,10 +34,14 @@ export const StyOption = styled(NavLink)`
     display: flex;
     align-items:center ;
     transition:0.3s;
-    height:100% ;
-    padding: 1rem;
     border-radius:8px ;
+
+
+
+
     &.login{
+        padding: 1rem;
+        height:100% ;
         background-color: ${colors.secundary};
         color:white;
         &.active{
@@ -59,7 +65,10 @@ export const  StyMenu = styled.nav`
     width:100vw ;
     height: 3rem;
     padding: 5px 1rem ;
-
+    .options{
+        display:flex ;
+        flex-direction:row ;
+    }
     .menu-logo{
         display:flex ;
         align-items:center ;

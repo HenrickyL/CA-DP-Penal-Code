@@ -3,6 +3,9 @@ import { IUser,IUserRequest, IUserResponse } from "../../store/ducks/authenticat
 import api from "../apiService"
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
+import { Dispatch } from "redux";
+import * as authActions from '../../store/ducks/authentication/actions'
+
 
 export const getToken = ():string | null=>{
     return localStorage.getItem('token')
@@ -26,13 +29,18 @@ export const generateToken = (user:IUser):string=>{
 } 
 
 export const validateToken = (token:string | null):boolean =>{
-    if(process.env.REACT_APP_JWT_KEY==null)
+    try{
+
+        if(process.env.REACT_APP_JWT_KEY==null)
         throw new Error('jwt key not found')
-
-    if(token==null) return false
-
-    const response = jwt.verify(token, process.env.REACT_APP_JWT_KEY);
-    return response!= null
+        
+        if(token==null) return false
+        
+        const response = jwt.verify(token, process.env.REACT_APP_JWT_KEY);
+        return response != null
+    }catch(err){
+        return false
+    }
 }
 
 
@@ -49,7 +57,7 @@ export const SetLogin = async (userData:IUserRequest):Promise<IUserResponse|null
         }
         const token = generateToken(existsUser)
         setToken(token)
-
+        setUser({id:existsUser.id,nome:existsUser.nome})
         return existsUser;
     }catch(err){
         console.error(err)
@@ -62,3 +70,17 @@ export const setLogout = ():void=>{
     localStorage.removeItem("user");
     localStorage.removeItem("token");
 } 
+
+
+
+export const CheckStoreAutentication = (dispatch:Dispatch)=>{
+    const token = getToken()
+    const validate = validateToken(token)
+    if(validate){
+        const user = getUser()
+        dispatch(authActions.loginSuccess(validate,user,token))
+    }else{
+        dispatch(authActions.loginFailure())
+        setLogout()
+    }
+  }

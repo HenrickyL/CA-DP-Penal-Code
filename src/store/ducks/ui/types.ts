@@ -19,9 +19,12 @@ export enum UITypes {
 /**
  * State Types
  */
-
+export interface Redirect{
+    value: boolean
+    previousUrl?:string | null
+}
 export interface UIState{
     readonly loading: boolean,
     readonly error: boolean,
-    readonly redirect: boolean
+    readonly redirect: Redirect
 }

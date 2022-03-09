@@ -4,7 +4,9 @@ import { UIState,UITypes} from './types';
 const INITIAL_STATE:UIState = {
     error:false,
     loading:false,
-    redirect:false
+    redirect:{
+        value:false
+    }
 }
 
 const reducer: Reducer<UIState> = 
