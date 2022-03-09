@@ -31,7 +31,6 @@ const LoginPage = ()=>{
     },[])
 
     useEffect(()=>{
-        console.log(uiState,authState)
         setLoading(uiState.loading)
         setError(uiState.error)
         setRedirect(authState.authenticated)
@@ -44,7 +43,6 @@ const LoginPage = ()=>{
 
         SetLogin(data)
             .then(res=>{
-                console.log(res)
                 if(!res){
                     dispatch(uiActions.setError(true))
                 }else{

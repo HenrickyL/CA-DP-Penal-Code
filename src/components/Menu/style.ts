@@ -3,6 +3,30 @@ import styled from 'styled-components'
 import { NavLink } from 'react-router-dom';
 
 
+export const StyUserOptions = styled.div`
+    .icon{
+        width:2rem ;
+        height:2rem ;
+        color:${colors.primary};
+        padding: 5px;
+        border-radius:50% ;
+        border: 2px solid ${colors.primary} ;
+        transition: 0.3s;
+        &:hover{
+            padding: 4px;
+            color:black;
+            border: 1px solid black ;
+
+
+        }
+        &:active{
+            transform: scale(0.95) ;
+            color:${colors.secundary};
+            border: 1px solid ${colors.secundary} ;
+        }
+    }
+`
+
 
 export const StyOption = styled(NavLink)`
     display: flex;
@@ -11,13 +35,14 @@ export const StyOption = styled(NavLink)`
     height:100% ;
     padding: 1rem;
     border-radius:8px ;
-    background-color: ${colors.secundary};
-    color:white;
-    &.active{
-        background-color: ${colors.white2};
-        color:black;
-        border-radius:12px ;
-
+    &.login{
+        background-color: ${colors.secundary};
+        color:white;
+        &.active{
+            background-color: ${colors.white2};
+            color:black;
+            border-radius:12px ;
+        }
     }
     span{
         font-weight:bold ;
