@@ -11,15 +11,15 @@ export const StyUserOptions = styled.div`
         padding: 5px;
         border-radius:50% ;
         border: 2px solid ${colors.primary} ;
-        transition: 0.3s;
+        transition: 0.5s;
+        cursor:pointer ;
         &:hover{
             padding: 4px;
             color:black;
             border: 1px solid black ;
-
-
         }
         &:active{
+            padding: 4px;
             transform: scale(0.95) ;
             color:${colors.secundary};
             border: 1px solid ${colors.secundary} ;
