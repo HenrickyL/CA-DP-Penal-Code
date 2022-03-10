@@ -4,8 +4,8 @@ import {ISubMenu, Menu} from '../../components/Menu'
 import { useDispatch, useSelector } from "react-redux";
 import { ApplicationState } from "../../store";
 import { useEffect } from "react";
-import * as uiActions from '../../store/ducks/ui/actions'
-import { CheckStoreAutentication } from "../../services/authService";
+import * as authActions from '../../store/ducks/authentication/actions'
+import { CheckStoreAutentication, getToken, validateToken } from "../../services/authService";
 
 
 const subMenu : ISubMenu[] = [
@@ -32,13 +32,17 @@ export function Base() {
     
 
     useEffect(()=>{
-        dispatch(uiActions.clean())
         CheckStoreAutentication(dispatch)
     },[])
 
     useEffect(()=>{
       const handleInterval = setInterval(()=>{
-        CheckStoreAutentication(dispatch)
+        const token = getToken()
+        const validate = validateToken(token)
+        if(!validate){
+          dispatch(authActions.logout)
+          clearInterval(handleInterval)
+        }
       },30000)
       return ()=>{
         clearInterval(handleInterval)

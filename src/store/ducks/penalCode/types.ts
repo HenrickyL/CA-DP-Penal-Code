@@ -12,12 +12,13 @@ export enum PenalCodeTypes {
  * Data Types
  */
 export interface IPenalCode{
+    id:string
     nome: string
     descricao:string
-    dataCriacao: Date
-    multa: number
-    tempoPrisao: number
-    status: number
+    dataCriacao: string
+    multa: string
+    tempoPrisao: string
+    status: string
 }
 
 /**

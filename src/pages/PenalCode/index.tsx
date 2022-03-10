@@ -1,31 +1,31 @@
 import { StyPenalCode } from "./style"
-import {
-    Table,
-    Thead,
-    Tbody,
-    Tfoot,
-    Tr,
-    Th,
-    Td,
-    TableCaption,
-  } from '@chakra-ui/react'
+
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { ApplicationState } from "../../store"
 import { IPenalCode } from "../../store/ducks/penalCode/types"
 import * as penalCodeAction from '../../store/ducks/penalCode/actions'
+import * as statusAction from '../../store/ducks/status/actions'
+
 import api from "../../services/apiService"
+import { formatPenalCode } from "../../services/dataService"
+import { IStatus } from "../../store/ducks/status/types"
+import DataTable from "../../components/DataTable"
 
 
 const PenalCode = ()=>{
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<boolean>(false)
 
     const [penalCodes, setPenalcodes] = useState<IPenalCode[]>([])
+    const [status, setstatus] = useState<IStatus[]>([])
+
 
 
     const dispatch = useDispatch()
     const penalCodeState = useSelector((state:ApplicationState) => state.penalCode);
+    const statusState = useSelector((state:ApplicationState) => state.status);
+
 
     const requestPenalCodes = ()=>{
         api.get('codigopenal')
@@ -37,56 +37,42 @@ const PenalCode = ()=>{
             dispatch(penalCodeAction.loadFailure())
         })
     }
+
+    const requestStatus = ()=>{
+        api.get('status')
+        .then(res=>{
+            const allStatus: IStatus[] = res.data
+            dispatch(statusAction.loadSucces(allStatus))
+        })
+        .catch(err=>{
+            dispatch(statusAction.loadFailure())
+        })
+    }
+
+
     useEffect(()=>{
         dispatch(penalCodeAction.loadRequest())
         requestPenalCodes()
-        setPenalcodes(penalCodeState.data)
+        requestStatus()
+        setPenalcodes(formatPenalCode(penalCodeState.data,status))
+        setstatus(statusState.data)
         setLoading(penalCodeState.loading)
         setError(penalCodeState.error)
     },[])
 
 
     useEffect(()=>{
-        console.log(penalCodeState)
-        setPenalcodes(penalCodeState.data)
+        setPenalcodes(formatPenalCode(penalCodeState.data,status))
+        setstatus(statusState.data)
         setLoading(penalCodeState.loading)
         setError(penalCodeState.error)
-    },[penalCodeState])
+    },[penalCodeState,statusState])
 
 
     return(
         <StyPenalCode>
             <div>
-                <Table variant='simple'>
-                    <TableCaption>Imperial to metric conversion factors</TableCaption>
-                    <Thead>
-                        <Tr>
-                        <Th>Nome</Th>
-                        <Th isNumeric>Multa</Th>
-                        <Th>Tempo de Prisão</Th>
-                        <Th>Data</Th>
-                        <Th>Status</Th>
-                        </Tr>
-                    </Thead>
-                        <Tbody>
-                        {penalCodes.length>0 &&
-                            penalCodes.map((pc,i) =>
-                            <Tr key={i}>
-                                <Td>{pc.nome}</Td>
-                                <Td>{pc.multa}</Td>
-                                <Td>{pc.tempoPrisao}</Td>
-                                <Td>{pc.dataCriacao}</Td>
-                                <Td>{pc.status}</Td>
-
-                            </Tr>
-                            )                          
-                        }
-                        </Tbody>
-                        {penalCodes.length ===0 && <span>Nenhum código penal encontrado</span>}
-                       
-                        
-                    
-                </Table>
+            <DataTable values={penalCodes} headers={['Nome','Multa','Tempo de Prisão','Data','Status']}/>
             </div>
         </StyPenalCode>
 
