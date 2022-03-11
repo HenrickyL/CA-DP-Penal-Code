@@ -1,12 +1,18 @@
 import {
-    Table,
-    Thead,
     Tbody,
     Tr,
     Th,
-    Td,
     Skeleton,
+    Checkbox,
+    Spinner,
   } from '@chakra-ui/react'
+import {StyTable, StyTd, StyThead, StyTr} from './style'
+import {FaRegEdit as EditBt} from 'react-icons/fa'
+import {MdEdit as Edit} from 'react-icons/md'
+import {FiExternalLink as ExternalLink} from 'react-icons/fi'
+import { useEffect, useState } from 'react'
+import {NavLink} from 'react-router-dom'
+
 
 
 interface IProp{
@@ -17,48 +23,56 @@ interface IProp{
 }
 
 const DataTable = (props:IProp)=>{
+    const [edit,setEdit] = useState<boolean>(false)
+
+    const handleClick = ()=>{
+        setEdit(!edit)
+    }
+    useEffect(()=>{
+        console.log('>>',props.headers,props.values)
+    },[])
     return(
-        <Table variant='simple'>
-        <Thead>
-            <Tr>
-                {props.headers.map(h=>
-                    <Th>{h}</Th>
-                    )}
-            </Tr>
-            
-        </Thead>
+        <StyTable variant='simple'>
+            <StyThead>
+                <Tr>
+                    {props.headers.map((h,i)=>
+                        <Th key={`h${i}`}>{h}</Th>
+                        )}
+                        <Th key={'h-edit'}><Checkbox onChange={handleClick}><Edit/></Checkbox></Th>
+                </Tr>
+            </StyThead>
             <Tbody>
                 {
                     props.loading? 
                         (Array<number>(5).fill(0)).map((x,i)=>
-                            <Tr key={i}>
-                                <Td><Skeleton height='10px'  /></Td>
-                                <Td><Skeleton height='10px' /></Td>
-                                <Td><Skeleton height='10px' /></Td>
-                                <Td><Skeleton height='10px' /></Td>
-                                <Td><Skeleton height='10px' /></Td>
-                            </Tr>
+                            <StyTr key={`r${i}`}>
+                                <StyTd><Skeleton height='10px' /></StyTd>
+                                <StyTd><Skeleton height='10px' /></StyTd>
+                                <StyTd><Skeleton height='10px' /></StyTd>
+                                <StyTd><Skeleton height='10px' /></StyTd>
+                                <StyTd><Skeleton height='10px' /></StyTd>
+                            </StyTr>
                         )
                     :
-                    props.values.length>0 &&
+                    props.values.length>0 ?
                     props.values.map((pc,i) =>
-                        <Tr key={i}>
-                            <Td>{pc.nome}</Td>
-                            <Td >{pc.multa}</Td>
-                            <Td>{pc.tempoPrisao}</Td>
-                            <Td>{pc.dataCriacao}</Td>
-                            <Td>{pc.status}</Td>
-
-                        </Tr>
-                        )                          
-                    
+                        <StyTr key={`r${i}`} status={pc.status && ''} >
+                            <StyTd>{pc.nome}</StyTd>
+                            <StyTd >{pc.multa}</StyTd>
+                            <StyTd>{pc.tempoPrisao}</StyTd>
+                            <StyTd>{pc.dataCriacao}</StyTd>
+                            <StyTd>{pc.status}</StyTd>
+                            <StyTd className={`bt-edit`}> 
+                                <NavLink className={edit ? 'editable' : ''} to={`/${pc.id}/${edit? 'edit':''}`}>
+                                    {edit? <EditBt/> : <ExternalLink/>}
+                                </NavLink>
+                            </StyTd>
+                        </StyTr>
+                        )
+                        :<Spinner size='xl' />
                 }
             </Tbody>
-            {props.values.length ===0 && <span>Nenhum código penal encontrado</span>}
-           
-            
-        
-    </Table>
+    </StyTable>
     )
 }
 

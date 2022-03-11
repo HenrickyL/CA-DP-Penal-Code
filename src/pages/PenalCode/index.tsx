@@ -1,6 +1,6 @@
 import { StyPenalCode } from "./style"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { ApplicationState } from "../../store"
 import { IPenalCode } from "../../store/ducks/penalCode/types"
@@ -68,11 +68,13 @@ const PenalCode = ()=>{
         setError(penalCodeState.error)
     },[penalCodeState,statusState])
 
-
+const TableMemo = useMemo(()=>        
+    <DataTable values={penalCodes} headers={['Nome','Multa','Tempo de Prisão','Criação','Status']}/>,[penalCodes]
+)
     return(
         <StyPenalCode>
             <div>
-            <DataTable values={penalCodes} headers={['Nome','Multa','Tempo de Prisão','Data','Status']}/>
+            {TableMemo}
             </div>
         </StyPenalCode>
 
