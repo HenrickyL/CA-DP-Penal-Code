@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react"
-import {  useDispatch, useSelector } from "react-redux"
+import {  useSelector } from "react-redux"
 import { ApplicationState } from "../../store"
 import { Navigate, Outlet } from "react-router-dom"
-import { CheckStoreAutentication } from "../../services/authService"
-import { NotFound } from "../../pages/NotFound"
 
 
 

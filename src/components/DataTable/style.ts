@@ -11,15 +11,14 @@ interface ITrProp{
 export const StyTr = styled(Tr)<ITrProp>`
     transition:0.3s;
     background-color:${colors.white1} ;
-    cursor:pointer ;
 
-    ${p=> p.status.toUpperCase()==='INATIVO'?
+    ${p=> p.status ?  (p.status==='Inativo'?
         `
         color: gray;        
         background-color:${colors.white3} ;
         `
         :
-        ``
+        ``):``
     }
 
     &:hover{
@@ -29,11 +28,12 @@ export const StyTr = styled(Tr)<ITrProp>`
     }
     .bt-edit{
         font-size:1.2rem ;
-        color: ${colors.primary};   
-        & >.editable{
+        color: ${colors.primary};  
+        cursor:pointer ;
+
+    }
+    .editable{
             color: ${colors.secundary};   
-    
-        }
     }
     
     ${StyTd}{
@@ -50,5 +50,4 @@ export const StyTable = styled(Table)`
     background-color: #aaa;
     padding:1rem ;
     border-radius:8px ;
-    
 `

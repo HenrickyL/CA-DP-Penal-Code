@@ -11,25 +11,29 @@ import {FaRegEdit as EditBt} from 'react-icons/fa'
 import {MdEdit as Edit} from 'react-icons/md'
 import {FiExternalLink as ExternalLink} from 'react-icons/fi'
 import { useEffect, useState } from 'react'
-import {NavLink} from 'react-router-dom'
+import {NavLink, useNavigate} from 'react-router-dom'
 
 
 
 interface IProp{
     loading?: boolean
-    values: any[],
+    values: any[]
     notFoundText?:string
     headers: string[]
+    formater?(...a:any):any
 }
 
 const DataTable = (props:IProp)=>{
     const [edit,setEdit] = useState<boolean>(false)
+    const navigate = useNavigate()
 
     const handleClick = ()=>{
         setEdit(!edit)
     }
+    const handleRedirect = (data:any,edit:boolean)=>{
+        navigate(`${data.id}${edit? '/edit':''}`, { state: data});
+    }
     useEffect(()=>{
-        console.log('>>',props.headers,props.values)
     },[])
     return(
         <StyTable variant='simple'>
@@ -56,20 +60,18 @@ const DataTable = (props:IProp)=>{
                     :
                     props.values.length>0 ?
                     props.values.map((pc,i) =>
-                        <StyTr key={`r${i}`} status={pc.status && ''} >
+                        <StyTr key={`r${i}`} status={pc.status} >
                             <StyTd>{pc.nome}</StyTd>
                             <StyTd >{pc.multa}</StyTd>
                             <StyTd>{pc.tempoPrisao}</StyTd>
                             <StyTd>{pc.dataCriacao}</StyTd>
                             <StyTd>{pc.status}</StyTd>
-                            <StyTd className={`bt-edit`}> 
-                                <NavLink className={edit ? 'editable' : ''} to={`/${pc.id}/${edit? 'edit':''}`}>
+                            <StyTd className={`bt-edit ${edit ? 'editable' : ''}`} onClick={()=>handleRedirect(pc,edit) }> 
                                     {edit? <EditBt/> : <ExternalLink/>}
-                                </NavLink>
                             </StyTd>
                         </StyTr>
                         )
-                        :<Spinner size='xl' />
+                        : <Spinner size='xl' />
                 }
             </Tbody>
     </StyTable>

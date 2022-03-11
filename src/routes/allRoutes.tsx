@@ -26,7 +26,7 @@ export const privateRouters: RouteType[] = [
   },
   {
     path: ":id",
-    element: <PenalCodeDetails/>,
+    element: <PenalCodeDetails edit={false}/>,
     key: "PenalCodeDetails",
   },
   {
