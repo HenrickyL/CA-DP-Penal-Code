@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react";
+import {  ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import {  useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { ApplicationState } from "../../store";
@@ -6,7 +6,7 @@ import { IPenalCode } from "../../store/ducks/penalCode/types";
 import { IStatus } from "../../store/ducks/status/types";
 import { StyForm, StyPenalCodeDetails } from "./style";
 import * as penalCodeAction from '../../store/ducks/penalCode/actions'
-import { Button, ButtonGroup,  Editable, EditableInput, EditablePreview, EditableTextarea, Flex, IconButton, Input, Select, Spinner, useEditableControls, UseEditableReturn } from "@chakra-ui/react";
+import { Button, ButtonGroup,  Divider,  Editable, EditableInput, EditablePreview, EditableTextarea, Flex, IconButton, Input, Select, Spinner, Textarea, useEditableControls, UseEditableReturn } from "@chakra-ui/react";
 import {CheckIcon,CloseIcon,EditIcon} from '@chakra-ui/icons'
 import { requestStatus } from "../../services/dataService";
 
@@ -85,56 +85,90 @@ function FormPenalCodeDetail({penalCode,status}:IFormPenalCode) {
     /* Here's a custom control */
     const [edit, setEdit]= useState<boolean>(false)
     const [oldValue, setOldValue] = useState<IPenalCode>(penalCode)
+    const [aux, setAux] = useState<IPenalCode>(penalCode)
+
    
+    type TChangeOp = 'nome'|'status'|'multa'|'tempoPrisao'|'descricao'
+    const handleChange = (op:TChangeOp, event:ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>)=>{
+        const {value} = event.target
+        switch (op) {
+            case 'nome':
+                setAux({...aux,nome:value})
+                break;
+            case 'status':
+                setAux({...aux,status:value})
+                break;
+            case 'multa':
+                setAux({...aux,multa:value})
+                break;
+            case 'tempoPrisao':
+                setAux({...aux,tempoPrisao:value})
+                break;
+            case 'descricao':
+                setAux({...aux,descricao:value})
+                break;
+            default:
+                console.error('EditFailed');
+                break;
+        }
 
-    
+    }
 
-    const handleClick = (action: 'cancel'|'save')=>{
+    const handleClick = (action: 'cancel'|'save',event:MouseEvent)=>{
+        event.preventDefault()
+        if(action==='save'){
+            setOldValue(aux)
+        }
         setEdit(!edit)
     }
     return (
         
-        <StyForm  >
-            {!edit && <IconButton aria-label="" size='sm' icon={<EditIcon />} onClick={()=>{setEdit(!edit)}}/>}
+        <StyForm  onSubmit={(e)=>e.preventDefault()}>
             
-            <main>
-                <div className="header">
-                    <Editable defaultValue={oldValue.nome} isDisabled={!edit} >
-                        <EditablePreview />
-                        <Input  as={EditableInput} />
-                    </Editable>
-
-                    {
-                        edit ?   
-                            <Select placeholder='Status'>
+            {!edit && <IconButton className="bt-edit" aria-label="" size='sm' icon={<EditIcon />} onClick={()=>{setEdit(!edit)}}/>}
+                {edit ? 
+                    <main className="editable">
+                        <div className="header">
+                            <Input  defaultValue={oldValue.nome}  onChange={(e)=>handleChange('nome',e)}/>
+                            <Select placeholder='Status' onChange={(e)=>handleChange('status',e)}>
                                 {status.map((s,i)=>
                                     <option key={i} selected={s.id===oldValue.statusId} value={s.id}>{s.descricao}</option>
                                 )}
-                            </Select> :
-                            <span>{oldValue.status}</span>
-                    }
-                </div>
+                            </Select> 
+                        </div>
+                        <Divider />
+                        <div className="content">
+                            <div>
+                                <Input  defaultValue={oldValue.multa}  onChange={(e)=>handleChange('multa',e)}/>
+                                <Input  defaultValue={oldValue.tempoPrisao}  onChange={(e)=>handleChange('tempoPrisao',e)}/>
+                            </div>
+                            <Textarea className="description" defaultValue={oldValue.descricao} onChange={(e)=>handleChange('descricao',e)} resize={'none'}/>
+                        </div>
+                    </main>
+                    :
+                    <main>
+                        <div className="header">
+                                <span>{oldValue.nome}</span>
+                                <span>{oldValue.status}</span>
+                        </div>
+                        <Divider />
+                        <div className="content">
+                            <div>
+                                <span><b>Multa:</b>{oldValue.multa}</span>
+                                <span><b>Tempo de Prisão:</b>{oldValue.tempoPrisao}</span>
+                            </div>
 
-                <Editable defaultValue={ oldValue.multa} isDisabled={!edit} >
-                    <EditablePreview />
-                    <Input as={EditableInput} />
-                </Editable>
-                <Editable defaultValue={ oldValue.tempoPrisao} isDisabled={!edit} >
-                    <EditablePreview />
-                    <Input as={EditableInput} />
-                </Editable>
-
-                <Editable defaultValue={oldValue.descricao} isDisabled={!edit} >
-                    <EditablePreview />
-                    <Input  as={EditableTextarea} />
-                </Editable>
+                            <p className="description">{oldValue.descricao}</p>
+                        </div>
+                        
+                    </main>
+            
+                }
 
 
-
-            </main>
-            {edit && <div>
-                <Button  onClick={()=>handleClick("cancel")}><CloseIcon/></Button>
-                <Button onClick={()=>handleClick("save")}><CheckIcon/></Button>
+            {edit && <div className="controls">
+                <Button  onClick={(e)=>handleClick("cancel",e)}><CloseIcon/></Button>
+                <Button type="submit" onClick={(e)=>handleClick("save",e)}><CheckIcon/></Button>
             </div>}
         </StyForm>
     )
