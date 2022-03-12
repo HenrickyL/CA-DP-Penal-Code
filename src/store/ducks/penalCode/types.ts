@@ -20,7 +20,15 @@ export interface IPenalCode{
     tempoPrisao: string,
     status: string
     statusId: string
+}
 
+export interface IPenalCodeRequest{
+    nome: string,
+    descricao:string,
+    dataCriacao: string,
+    multa: string,
+    tempoPrisao: string,
+    status: string
 }
 
 /**

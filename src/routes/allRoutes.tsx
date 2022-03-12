@@ -1,4 +1,5 @@
 // add all your routes here
+import AddPenalCode from "../pages/AddPenalCode";
 import LoginPage from "../pages/Login";
 import { NotFound } from "../pages/NotFound";
 import PenalCode from "../pages/PenalCode";
@@ -26,7 +27,7 @@ export const privateRouters: RouteType[] = [
   },
   {
     path: "add",
-    element: <h1>Add</h1>,
+    element: <AddPenalCode/>,
     key: "PenalCodes",
   },
   {

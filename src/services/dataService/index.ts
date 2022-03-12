@@ -41,6 +41,7 @@ export const formatPenalCode = (data:IPenalCode   , status:IStatus[]=[]):IPenalC
 
 
 export const requestPenalCodes = (dispatch:Dispatch)=>{
+    dispatch(penalCodeAction.loadRequest())
     api.get('codigopenal')
     .then(res=>{
         const allPenalCodes: IPenalCode[] = res.data
@@ -63,6 +64,7 @@ export const requestPenalCodesById = async (id:string,dispatch:Dispatch):Promise
 }
 
 export const requestStatus = (dispatch:Dispatch)=>{
+    dispatch(statusAction.loadRequest())
     api.get('status')
     .then(res=>{
         const allStatus: IStatus[] = res.data

@@ -1,4 +1,4 @@
-import { Textarea } from '@chakra-ui/react';
+import { Select } from '@chakra-ui/react';
 import  styled  from "styled-components";
 import { colors } from '../../styles/global';
 
@@ -27,9 +27,26 @@ export const StyForm = styled.form`
             display:flex ;
             flex-direction:row;
             justify-content:space-between;
+            gap:12px ;
             span{
                 font-weight:bold ;
                 color:${colors.white1}
+            }
+            
+            div{
+                display:flex ;
+                flex-direction:row;
+                gap:12px ;
+                .date{
+                    color:${colors.white2};
+                }
+            }
+        }
+        input,textarea,select{
+            background-color:whitesmoke ;
+            min-width:6rem ;
+            &:focus{
+                background-color:white ;
             }
         }
         .content{
@@ -41,7 +58,7 @@ export const StyForm = styled.form`
             padding: 1rem 0;
             border-radius: 0 0 8px 8px;
             overflow-y:auto ;
-            max-height:10rem ;
+            max-height:12rem ;
 
             & > div{
                 display:flex;

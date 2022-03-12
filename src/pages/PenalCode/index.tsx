@@ -27,7 +27,7 @@ const PenalCode = ()=>{
 
 
     useEffect(()=>{
-        dispatch(penalCodeAction.loadRequest())
+        console.clear()
         if(status.length===0)
             requestStatus(dispatch)
         setstatus(statusState.data)
@@ -37,6 +37,7 @@ const PenalCode = ()=>{
 
 
     useEffect(()=>{
+        console.log('>>',penalCodeState,statusState)
         setstatus(statusState.data)
         setPenalcodes(formatPenalCodes(penalCodeState.data,status))
         setLoading(penalCodeState.loading)

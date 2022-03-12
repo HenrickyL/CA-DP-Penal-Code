@@ -46,7 +46,7 @@ const PenalCodeDetails = (prop:IProp)=>{
         setstatus(statusState.data)
         const currentPenalCode = location.state as IPenalCode
         if(!currentPenalCode)
-            navigate('/app')
+            navigate('/')
         setCurrent(currentPenalCode)
         setLoading(penalCodeState.loading)
         setError(penalCodeState.error)
@@ -131,7 +131,7 @@ function FormPenalCodeDetail({penalCode,status,edit}:IFormPenalCode) {
             allPenalCodes[index] = oldValue
             dispatch(penalCodeAction.loadSucces(allPenalCodes))
         }
-        navigate(`/app/${oldValue.id}`,{state:oldValue})
+        navigate(`/${oldValue.id}`,{state:oldValue})
     }
     return (
         
@@ -142,11 +142,14 @@ function FormPenalCodeDetail({penalCode,status,edit}:IFormPenalCode) {
                     <main className="editable">
                         <div className="header">
                             <Input  defaultValue={oldValue.nome}  onChange={(e)=>handleChange('nome',e)}/>
-                            <Select placeholder='Status' onChange={(e)=>handleChange('status',e)}>
-                                {status.map((s,i)=>
-                                    <option key={i} selected={s.id===oldValue.statusId} value={s.id}>{s.descricao}</option>
-                                )}
-                            </Select> 
+                            <div>
+                                <Select placeholder='Status' onChange={(e)=>handleChange('status',e)}>
+                                    {status.map((s,i)=>
+                                        <option key={i} selected={s.id===oldValue.statusId} value={s.id}>{s.descricao}</option>
+                                    )}
+                                </Select>
+                                <span className="date">{oldValue.dataCriacao}</span>
+                            </div>
                         </div>
                         <Divider />
                         <div className="content">
@@ -167,7 +170,11 @@ function FormPenalCodeDetail({penalCode,status,edit}:IFormPenalCode) {
                     <main>
                         <div className="header">
                                 <span>{oldValue.nome}</span>
-                                <span>{oldValue.status}</span>
+                                <div>
+                                    <span>{oldValue.status}</span>
+                                    <span className="date">{oldValue.dataCriacao}</span>
+                                </div>
+
                         </div>
                         <Divider />
                         <div className="content">
