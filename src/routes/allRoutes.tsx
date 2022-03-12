@@ -20,8 +20,13 @@ export const routes: RouteType[] = [
 
 export const privateRouters: RouteType[] = [
   {
-    path: "/",
+    path: "",
     element: <PenalCode/>,
+    key: "PenalCodes",
+  },
+  {
+    path: "add",
+    element: <h1>Add</h1>,
     key: "PenalCodes",
   },
   {
@@ -33,5 +38,10 @@ export const privateRouters: RouteType[] = [
     path: ":id/edit",
     element: <PenalCodeDetails edit={true}/>,
     key: "PenalCodeDetailsEdit",
+  },
+  {
+    path: "*",
+    element: <NotFound/>,
+    key: "notfound",
   },
 ];

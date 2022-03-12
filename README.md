@@ -11,3 +11,5 @@ This template has goal to optimize the initial development moments with React.js
 - Typescript
 - Styled-components
 - React Router Dom
+- Redux
+- chakra-ui

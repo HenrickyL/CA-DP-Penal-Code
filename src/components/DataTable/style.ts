@@ -1,5 +1,5 @@
 import { colors } from './../../styles/global';
-import { Table, Td, Thead, Tr } from "@chakra-ui/react";
+import { Table, Td, Tfoot, Thead, Tr } from "@chakra-ui/react";
 import styled from "styled-components";
 
 export const StyThead = styled(Thead)``
@@ -46,8 +46,12 @@ export const StyTr = styled(Tr)<ITrProp>`
     }
 
 `;
+
 export const StyTable = styled(Table)`
     background-color: #aaa;
     padding:1rem ;
     border-radius:8px ;
+
+
+    
 `

@@ -1,12 +1,12 @@
 import {  ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import {  useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ApplicationState } from "../../store";
 import { IPenalCode } from "../../store/ducks/penalCode/types";
 import { IStatus } from "../../store/ducks/status/types";
 import { StyForm, StyPenalCodeDetails } from "./style";
 import * as penalCodeAction from '../../store/ducks/penalCode/actions'
-import { Button, ButtonGroup,  Divider,  Editable, EditableInput, EditablePreview, EditableTextarea, Flex, IconButton, Input, Select, Spinner, Textarea, useEditableControls, UseEditableReturn } from "@chakra-ui/react";
+import { Button,  Divider,  IconButton, Input, Select, Spinner, Textarea } from "@chakra-ui/react";
 import {CheckIcon,CloseIcon,EditIcon} from '@chakra-ui/icons'
 import { requestStatus } from "../../services/dataService";
 
@@ -17,6 +17,7 @@ interface IProp{
 
 const PenalCodeDetails = (prop:IProp)=>{
     const location = useLocation();
+    const navigate = useNavigate()
     const dipatch = useDispatch()
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<boolean>(false)
@@ -44,7 +45,8 @@ const PenalCodeDetails = (prop:IProp)=>{
         requestStatus(dipatch)
         setstatus(statusState.data)
         const currentPenalCode = location.state as IPenalCode
-        console.log('>>',currentPenalCode)
+        if(!currentPenalCode)
+            navigate('/app')
         setCurrent(currentPenalCode)
         setLoading(penalCodeState.loading)
         setError(penalCodeState.error)
@@ -54,7 +56,6 @@ const PenalCodeDetails = (prop:IProp)=>{
 
     useEffect(()=>{
         setstatus(statusState.data)
-        
         setLoading(penalCodeState.loading)
         setError(penalCodeState.error)
         console.log(statusState)
@@ -68,7 +69,7 @@ const PenalCodeDetails = (prop:IProp)=>{
                 loading?
                     <Spinner/>
                     :
-                    <FormPenalCodeDetail penalCode={current} status={status}/>
+                    <FormPenalCodeDetail penalCode={current} edit={prop.edit} status={status}/>
                     
             }
 
@@ -79,15 +80,20 @@ const PenalCodeDetails = (prop:IProp)=>{
 interface IFormPenalCode{
     penalCode: IPenalCode
     status: IStatus[]
+    edit?: boolean
 }
 
-function FormPenalCodeDetail({penalCode,status}:IFormPenalCode) {
+function FormPenalCodeDetail({penalCode,status,edit}:IFormPenalCode) {
     /* Here's a custom control */
-    const [edit, setEdit]= useState<boolean>(false)
     const [oldValue, setOldValue] = useState<IPenalCode>(penalCode)
     const [aux, setAux] = useState<IPenalCode>(penalCode)
 
-   
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const penalCodeState = useSelector((state:ApplicationState) => state.penalCode);
+    const statusState = useSelector((state:ApplicationState) => state.status);
+
+
     type TChangeOp = 'nome'|'status'|'multa'|'tempoPrisao'|'descricao'
     const handleChange = (op:TChangeOp, event:ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>)=>{
         const {value} = event.target
@@ -96,7 +102,9 @@ function FormPenalCodeDetail({penalCode,status}:IFormPenalCode) {
                 setAux({...aux,nome:value})
                 break;
             case 'status':
-                setAux({...aux,status:value})
+                console.log('<<<<<',status,value)
+                const newStatus = status.find(x=>x.id===value)
+                setAux({...aux,status:newStatus?newStatus.descricao:value})
                 break;
             case 'multa':
                 setAux({...aux,multa:value})
@@ -118,14 +126,18 @@ function FormPenalCodeDetail({penalCode,status}:IFormPenalCode) {
         event.preventDefault()
         if(action==='save'){
             setOldValue(aux)
+            const allPenalCodes = penalCodeState.data
+            const index = allPenalCodes.findIndex(x=>x.id === penalCode.id)
+            allPenalCodes[index] = oldValue
+            dispatch(penalCodeAction.loadSucces(allPenalCodes))
         }
-        setEdit(!edit)
+        navigate(`/app/${oldValue.id}`,{state:oldValue})
     }
     return (
         
         <StyForm  onSubmit={(e)=>e.preventDefault()}>
             
-            {!edit && <IconButton className="bt-edit" aria-label="" size='sm' icon={<EditIcon />} onClick={()=>{setEdit(!edit)}}/>}
+            {!edit && <IconButton className="bt-edit" aria-label="" size='sm' icon={<EditIcon />} onClick={()=>{navigate('edit')}}/>}
                 {edit ? 
                     <main className="editable">
                         <div className="header">
@@ -139,8 +151,14 @@ function FormPenalCodeDetail({penalCode,status}:IFormPenalCode) {
                         <Divider />
                         <div className="content">
                             <div>
-                                <Input  defaultValue={oldValue.multa}  onChange={(e)=>handleChange('multa',e)}/>
-                                <Input  defaultValue={oldValue.tempoPrisao}  onChange={(e)=>handleChange('tempoPrisao',e)}/>
+                                <div>
+                                    <label htmlFor ="multa"><b>Multa:</b> R$ </label>
+                                    <Input id='multa' defaultValue={oldValue.multa}  onChange={(e)=>handleChange('multa',e)}/>
+                                </div>
+                                <div>
+                                    <label htmlFor ="tempoPrisao"><b>Tempo de Prisão(dias): </b></label>
+                                    <Input  id='tempoPrisao' defaultValue={oldValue.tempoPrisao}  onChange={(e)=>handleChange('tempoPrisao',e)}/>
+                                </div>
                             </div>
                             <Textarea className="description" defaultValue={oldValue.descricao} onChange={(e)=>handleChange('descricao',e)} resize={'none'}/>
                         </div>
@@ -154,15 +172,14 @@ function FormPenalCodeDetail({penalCode,status}:IFormPenalCode) {
                         <Divider />
                         <div className="content">
                             <div>
-                                <span><b>Multa:</b>{oldValue.multa}</span>
-                                <span><b>Tempo de Prisão:</b>{oldValue.tempoPrisao}</span>
+                                <span><b>Multa:</b> R$ {oldValue.multa}</span>
+                                <span><b>Tempo de Prisão: </b>{oldValue.tempoPrisao} dias</span>
                             </div>
 
                             <p className="description">{oldValue.descricao}</p>
                         </div>
                         
                     </main>
-            
                 }
 
 

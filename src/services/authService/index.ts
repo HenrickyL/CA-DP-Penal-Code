@@ -73,14 +73,16 @@ export const setLogout = ():void=>{
 
 
 
-export const CheckStoreAutentication = (dispatch:Dispatch)=>{
+export const CheckStoreAutentication = (dispatch:Dispatch):boolean=>{
     const token = getToken()
     const validate = validateToken(token)
     if(validate){
         const user = getUser()
         dispatch(authActions.loginSuccess(validate,user,token))
+        return true
     }else{
         dispatch(authActions.loginFailure())
         setLogout()
+        return false
     }
   }

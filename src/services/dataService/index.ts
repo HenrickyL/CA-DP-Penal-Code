@@ -16,7 +16,7 @@ export const formatPenalCodes = (data:IPenalCode[]   , status:IStatus[]=[]):IPen
         if(p.dataCriacao)
             p.dataCriacao = formatDate(p.dataCriacao,'dd/MM/yyyy')
         p.descricao = upperFirst(p.descricao)
-        p.multa = formatMoney(p.multa)
+        p.multa = Number(p.multa).toFixed(2)
         if(status.length>0){
             const aux = status.find(s=>s.id===p.status)
             p.statusId= p.status

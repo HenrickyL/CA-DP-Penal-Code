@@ -9,7 +9,9 @@ import * as penalCodeAction from '../../store/ducks/penalCode/actions'
 import {  formatPenalCodes, requestPenalCodes, requestStatus } from "../../services/dataService"
 import { IStatus } from "../../store/ducks/status/types"
 import DataTable from "../../components/DataTable"
-
+import {GrAdd as Add} from 'react-icons/gr'
+import { useNavigate } from "react-router-dom"
+import { Button } from "@chakra-ui/react"
 
 const PenalCode = ()=>{
     const [loading, setLoading] = useState<boolean>(true)
@@ -18,19 +20,19 @@ const PenalCode = ()=>{
     const [penalCodes, setPenalcodes] = useState<IPenalCode[]>([])
     const [status, setstatus] = useState<IStatus[]>([])
 
-
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const penalCodeState = useSelector((state:ApplicationState) => state.penalCode);
     const statusState = useSelector((state:ApplicationState) => state.status);
 
 
-    
-
-
     useEffect(()=>{
         dispatch(penalCodeAction.loadRequest())
-        requestStatus(dispatch)
-        requestPenalCodes(dispatch)
+        if(status.length===0)
+            requestStatus(dispatch)
+        setstatus(statusState.data)
+        if(penalCodes.length===0) 
+            requestPenalCodes(dispatch)
     },[])
 
 
@@ -41,17 +43,23 @@ const PenalCode = ()=>{
         setError(penalCodeState.error)
     },[penalCodeState,statusState])
 
+    const handleAdd = ()=>{
+        navigate(`add`);
+    }
+    
 const TableMemo = useMemo(()=>        
-    <DataTable values={penalCodes} formater={formatPenalCodes} headers={['Nome','Multa','Tempo de Prisão','Criação','Status']}/>,[penalCodes]
-)
+    <DataTable values={penalCodes} 
+        loading={loading}
+        headers={['Nome','Multa(R$)','Tempo de Prisão(Dias)','Criação','Status']}/>,[penalCodes])
     return(
         <StyPenalCode>
-            <div>
             {TableMemo}
-            </div>
+            <Button className="bt-add" onClick={handleAdd}>Adicionar</Button>
         </StyPenalCode>
 
     )
 }
+
+
 
 export default PenalCode

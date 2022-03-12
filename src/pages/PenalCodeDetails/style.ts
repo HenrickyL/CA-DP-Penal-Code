@@ -43,11 +43,17 @@ export const StyForm = styled.form`
             overflow-y:auto ;
             max-height:10rem ;
 
-            div{
+            & > div{
                 display:flex;
                 flex-direction:row;
                 width:100% ;
                 justify-content:space-around;
+                div{
+                    display:flex ;
+                    flex-direction:row ;
+                    align-items:center ;
+                    justify-content:center ;
+                }
             }
             .description{
                 width: 80% ;

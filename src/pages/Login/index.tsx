@@ -8,7 +8,8 @@ import { ApplicationState } from "../../store"
 import * as uiActions from '../../store/ducks/ui/actions'
 import * as authActions from '../../store/ducks/authentication/actions'
 import { getToken, SetLogin } from "../../services/authService"
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { NavigationState } from "../../dto"
 
 
 
@@ -20,7 +21,8 @@ const LoginPage = ()=>{
 
     const  {register, handleSubmit} = useForm()
     const formRef =useRef(document.createElement('form'))
-
+    const navigate = useNavigate()
+    const location = useLocation()
     const dispatch = useDispatch()
     const uiState = useSelector((state:ApplicationState) => state.ui);
     const authState = useSelector((state:ApplicationState) => state.auth);
@@ -34,8 +36,11 @@ const LoginPage = ()=>{
         setLoading(uiState.loading)
         setError(uiState.error)
         setRedirect(authState.authenticated)
+        if(redirect){
+            const navState = location.state as NavigationState
+            navigate(navState.to)
+        }
     },[authState, uiState])
-
 
     const setSubmit = (data:any)=>{
         dispatch(uiActions.clean())
@@ -65,7 +70,7 @@ const LoginPage = ()=>{
     return(
         
         <StyLogin>
-            {redirect && <Navigate to={'/'}/>}
+            
             <StyForm action="" ref={formRef} onSubmit={handleSubmit(setSubmit)}>
                 <h1>Login</h1>
                 <div>

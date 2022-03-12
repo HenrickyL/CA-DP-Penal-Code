@@ -13,7 +13,7 @@ export function AllRoutes() {
             <Route {...route} />
           ))}
 
-          <Route path="" element={<PrivateRoute />}>
+          <Route path="app" element={<PrivateRoute />}>
             {privateRouters.map((route) => (
               <Route {...route}/>
             ))}
