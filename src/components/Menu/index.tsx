@@ -8,8 +8,11 @@ import { useDispatch, useSelector } from "react-redux"
 import { ApplicationState } from "../../store"
 import * as uiActions from '../../store/ducks/ui/actions'
 import * as authActions from '../../store/ducks/authentication/actions'
+import {IUser} from '../../store/ducks/authentication/types'
+
 import { Dispatch } from "redux"
 import MenuDropdown from "../OptionDropdown"
+import { upperFirst } from "../../services/formatService"
 // import { TabList, Tab, Tabs } from "@chakra-ui/react"
 interface IOptionProp{
     to: string
@@ -33,10 +36,15 @@ const Option = ({to,title,className,dispatch}:TOptionProp)=>{
 interface IUserOpProp{
     dispatch?: Dispatch
 }
-const UserOptions = ()=>{
+interface IPropOption{
+    user:IUser | null
+}
+
+const UserOptions = ({user}:IPropOption)=>{
 
     return(
         <StyUserOptions>
+            {user &&<span>{upperFirst(user.nome)}</span>}
             <UserImg  className="icon"/>
         </StyUserOptions>
     )
@@ -52,6 +60,7 @@ interface IProp{
 
 export const Menu = (prop:IProp)=>{
     const dispatch = useDispatch()
+    const [user, setUser] = useState<IUser | null>(null)
     const authState = useSelector((state:ApplicationState) => state.auth);
     const uiState = useSelector((state:ApplicationState) => state.ui);
     const [authenticated, setAutenticated] = useState<boolean>(false)
@@ -62,6 +71,7 @@ export const Menu = (prop:IProp)=>{
 
     useEffect(()=>{
         setAutenticated(authState.authenticated)
+        setUser(authState.user)
     },[authState, uiState])
 
     const handleLogout = ()=>{
@@ -90,7 +100,7 @@ export const Menu = (prop:IProp)=>{
                             </Tabs> 
                             :<></>} */}
                         {authenticated? 
-                            <MenuDropdown element={<UserOptions />} items={[{title:'Logout',onClick:handleLogout,img:Logout}]} />
+                            <MenuDropdown element={<UserOptions user={user} />} items={[{title:'Logout',onClick:handleLogout,img:Logout}]} />
                             :<Option to="login" dispatch={dispatch} className={'login'} title="Login"/>}
                     </div>
             </StyMenu>

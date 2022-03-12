@@ -6,6 +6,11 @@ import { NavLink } from 'react-router-dom';
 
 
 export const StyUserOptions = styled.div`
+    display:flex ;
+    flex-direction:row ;
+    align-items: center;
+    gap:5px ;
+    font-weight:bold ;
     .icon{
         width:2rem ;
         height:2rem ;
